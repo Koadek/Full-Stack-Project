@@ -9,7 +9,7 @@ const Wrapper = styled.div`
   grid-auto-rows: 210px;
   align-items: center;
   flex-direction: column;
-  margin-top: 59px;
+  margin-top: 60px;
   grid-gap: 2px;
 `;
 
@@ -42,7 +42,7 @@ class Home extends Component {
           <Item
             cost={item.price}
             sellerId={item.sellerId}
-            imageLocation={item.image}
+            imagePaths={item.images}
             title={item.title}
             id={item.id}
             bio={item.bio}

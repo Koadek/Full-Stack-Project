@@ -73863,7 +73863,7 @@ const Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div`
   display: grid;
   grid-template-rows: auto 1fr;
   min-height: 100vh;
-  background: #d2d2d2;
+  background: aliceblue;
 `;
 const LoginWrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div`
   background-image: url(${_images__WEBPACK_IMPORTED_MODULE_11__["default"][0]});
@@ -73939,7 +73939,9 @@ class UnconnectedApp extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     _defineProperty(this, "renderItemDetails", routerData => {
       const itemId = routerData.match.params.itemId;
+      console.log(routerData);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_ItemDetails_jsx__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        history: routerData.history,
         itemId: itemId
       });
     });
@@ -74014,7 +74016,7 @@ const Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].div`
   grid-auto-rows: 210px;
   align-items: center;
   flex-direction: column;
-  margin-top: 59px;
+  margin-top: 60px;
   grid-gap: 2px;
 `;
 
@@ -74050,7 +74052,7 @@ class Home extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Wrapper, null, searchResults.map(item => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Item_jsx__WEBPACK_IMPORTED_MODULE_2__["default"], {
       cost: item.price,
       sellerId: item.sellerId,
-      imageLocation: item.image,
+      imagePaths: item.images,
       title: item.title,
       id: item.id,
       bio: item.bio
@@ -74204,7 +74206,7 @@ class Item extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
     console.log(this.props, 'inside item');
     return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CardCenter, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityImg, {
-      src: this.props.imageLocation[0]
+      src: this.props.imagePaths[0]
     }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityInfo, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(City, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Links, {
       to: '/details/' + this.props.id
     }, this.props.title)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cost, null, this.formatNumber(this.props.cost), "$"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Bio, null, this.formatText(this.props.bio)), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(PayBtn, {
@@ -74252,7 +74254,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 const Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_6__["default"].div`
   margin-top: 57px;
-  background-color: #fff;
   height: 100vh;
 `;
 const CityImgs = styled_components__WEBPACK_IMPORTED_MODULE_6__["default"].div`
@@ -74326,6 +74327,7 @@ const CityInfo = styled_components__WEBPACK_IMPORTED_MODULE_6__["default"].div`
   display: inline-block;
   color: rgb(72, 72, 72);
   text-decoration: none;
+  background-color: aliceblue;
 `;
 const City = styled_components__WEBPACK_IMPORTED_MODULE_6__["default"].div`
   font-weight: bold;
@@ -74363,7 +74365,10 @@ const Reviews = styled_components__WEBPACK_IMPORTED_MODULE_6__["default"].div`
 const Payment = styled_components__WEBPACK_IMPORTED_MODULE_6__["default"].div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 286px;
 `;
+const RentInfo = styled_components__WEBPACK_IMPORTED_MODULE_6__["default"].div``;
 
 class ItemDetails extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   constructor(...args) {
@@ -74387,6 +74392,11 @@ class ItemDetails extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       let responseBody = await response.text();
       console.log('responseBody from item details', responseBody);
       let body = JSON.parse(responseBody);
+
+      if (!body.success) {
+        this.props.history.replace('/');
+      }
+
       console.log('parsed body', body);
       this.setState({
         item: body.item,
@@ -74409,21 +74419,15 @@ class ItemDetails extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     const reviews = this.state.reviews;
     const filteredReviews = item.reviews.map(reviewId => reviews.find(review => review.id === reviewId));
-    return item ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Wrapper, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityImgs, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MainImg, {
-      src: item.image[0]
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SideImg, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SmallImg, {
-      src: item.image[1]
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SmallImg, {
-      src: item.image[2]
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SmallImg, {
-      src: item.image[3]
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SmallImg, {
-      src: item.image[4]
-    }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityInfo, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityValueWrapper, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(City, null, item.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Payment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cost, null, this.formatNumber(item.price), "$"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_stripe_checkout__WEBPACK_IMPORTED_MODULE_4___default.a, {
+    return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Wrapper, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityImgs, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MainImg, {
+      src: item.images[0]
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SideImg, null, item.images.slice(1, 5).map(img => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SmallImg, {
+      src: img
+    })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityInfo, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(City, null, item.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityValueWrapper, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Info, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityBio, null, item.bio), reviews.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Reviews, null, reviews.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Reviews:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, filteredReviews.map(review => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, review.content, " -", review.reviewer))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Payment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cost, null, this.formatNumber(item.price), "$"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_stripe_checkout__WEBPACK_IMPORTED_MODULE_4___default.a, {
       token: this.onToken,
       stripeKey: "pk_test_VR905wY5YcZfeGB53NVZkrXg00KftYQTND",
       label: "Buy now"
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "or"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.formatNumber(item.price / 30), "$ per day"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_dates__WEBPACK_IMPORTED_MODULE_2__["DateRangePicker"], {
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "or"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.formatNumber(item.rentPrice), "$ per day"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_dates__WEBPACK_IMPORTED_MODULE_2__["DateRangePicker"], {
       startDate: this.state.startDate // momentPropTypes.momentObj or null,
       ,
       startDateId: "your_unique_start_date_id" // PropTypes.string.isRequired,
@@ -74446,11 +74450,11 @@ class ItemDetails extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         focusedInput
       }) // PropTypes.func.isRequired,
 
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_stripe_checkout__WEBPACK_IMPORTED_MODULE_4___default.a, {
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(RentInfo, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.formatNumber(item.rentPrice), "$ x", ' ', (this.state.endDate - this.state.startDate) / 86400000, " day"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cost, null, this.formatNumber(item.rentPrice * (this.state.endDate - this.state.startDate) / 86400000), "$")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_stripe_checkout__WEBPACK_IMPORTED_MODULE_4___default.a, {
       token: this.onToken,
       stripeKey: "pk_test_VR905wY5YcZfeGB53NVZkrXg00KftYQTND",
       label: "Rent now"
-    }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Info, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityBio, null, item.bio), reviews.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Reviews, null, reviews.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Reviews:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, filteredReviews.map(review => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, review.content, " -", review.reviewer))))))) : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "No item found");
+    })))));
   }
 
 }
@@ -74616,7 +74620,7 @@ const Wrapper = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div`
   align-items: center;
   color: #fff;
   position: fixed;
-  height: 59px;
+  height: 60px;
   background-color: #3a3633;
   position: fixed;
   width: 100%;
@@ -74691,6 +74695,7 @@ const NavButton = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].butt
   }
 `;
 const SearchBar = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].input`
+  font-size: 18px;
   margin: 10px;
   padding: 10px;
   border-radius: var(--border-radius);
@@ -74717,7 +74722,8 @@ function Navbar({
   }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", null, "Monopalibay")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SearchBar, {
     type: "text",
     onChange: handleQueryChange,
-    value: query
+    value: query,
+    placeholder: "Which city should you own next?"
   }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NavLinks, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NavButton, {
     onClick: topFunction
   }, "Top"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(NavLink, {
@@ -74887,9 +74893,9 @@ class SellForm extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       });
     });
 
-    _defineProperty(this, "handleImageChange", evt => {
+    _defineProperty(this, "handleImagesChange", evt => {
       this.setState({
-        image: [...this.state.image, ...evt.target.image]
+        images: evt.target.files
       });
     });
 
@@ -74899,7 +74905,7 @@ class SellForm extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       let data = new FormData();
       data.append('title', this.state.title);
       data.append('price', this.state.price);
-      data.append('image', this.state.image);
+      this.state.images.forEach(img => data.append('images', img));
       data.append('username', this.props.username);
       data.append('bio', this.props.bio);
       fetch('/newCity', {
@@ -74912,7 +74918,7 @@ class SellForm extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
     this.state = {
       price: 0,
-      image: [],
+      images: [],
       title: '',
       bio: ''
     };
@@ -74939,7 +74945,7 @@ class SellForm extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(FormField, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Input, {
       type: "file",
       multiple: true,
-      onChange: this.handleImageChange
+      onChange: this.handleImagesChange
     }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SubmitBtn, {
       type: "submit",
       value: "Submit"

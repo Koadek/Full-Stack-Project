@@ -102,7 +102,7 @@ const Title = styled.h1`
 class SellForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { price: 0, image: [], title: '', bio: '' };
+    this.state = { price: 0, images: [], title: '', bio: '' };
   }
 
   handleTitleChange = evt => {
@@ -117,8 +117,8 @@ class SellForm extends Component {
     this.setState({ price: evt.target.value });
   };
 
-  handleImageChange = evt => {
-    this.setState({ image: [...this.state.image, ...evt.target.image] });
+  handleImagesChange = evt => {
+    this.setState({ images: evt.target.files });
   };
 
   handleSubmit = evt => {
@@ -127,7 +127,7 @@ class SellForm extends Component {
     let data = new FormData();
     data.append('title', this.state.title);
     data.append('price', this.state.price);
-    data.append('image', this.state.image);
+    this.state.images.forEach(img => data.append('images', img));
     data.append('username', this.props.username);
     data.append('bio', this.props.bio);
     fetch('/newCity', {
@@ -175,7 +175,11 @@ class SellForm extends Component {
             </div>
             <div>
               <FormField>
-                <Input type="file" multiple onChange={this.handleImageChange} />
+                <Input
+                  type="file"
+                  multiple
+                  onChange={this.handleImagesChange}
+                />
               </FormField>
             </div>
             <SubmitBtn type="submit" value="Submit" />

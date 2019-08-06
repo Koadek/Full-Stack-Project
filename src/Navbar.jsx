@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   align-items: center;
   color: #fff;
   position: fixed;
-  height: 59px;
+  height: 60px;
   background-color: #3a3633;
   position: fixed;
   width: 100%;
@@ -90,6 +90,7 @@ const NavButton = styled.button`
 `;
 
 const SearchBar = styled.input`
+  font-size: 18px;
   margin: 10px;
   padding: 10px;
   border-radius: var(--border-radius);
@@ -111,7 +112,12 @@ function Navbar({ query, handleQueryChange, setLogout }) {
       <Logo to="/">
         <h1>Monopalibay</h1>
       </Logo>
-      <SearchBar type="text" onChange={handleQueryChange} value={query} />
+      <SearchBar
+        type="text"
+        onChange={handleQueryChange}
+        value={query}
+        placeholder="Which city should you own next?"
+      />
       <NavLinks>
         <NavButton onClick={topFunction}>Top</NavButton>
         <NavLink to="/sellForm">Sell your city</NavLink>

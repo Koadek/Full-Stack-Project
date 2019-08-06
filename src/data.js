@@ -2,7 +2,8 @@ const initialItems = [
   {
     title: 'Montreal',
     price: 4000000,
-    image: [
+    rentPrice: 40000,
+    images: [
       'https://upload.wikimedia.org/wikipedia/commons/4/4d/Olympiastadion_Montreal.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Montreal_-_QC_-_Skyline.jpg/2560px-Montreal_-_QC_-_Skyline.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Bas%C3%ADlica_de_Notre-Dame%2C_Montreal%2C_Canadá%2C_2017-08-11%2C_DD_19.jpg/1024px-Bas%C3%ADlica_de_Notre-Dame%2C_Montreal%2C_Canadá%2C_2017-08-11%2C_DD_19.jpg',
@@ -19,7 +20,8 @@ const initialItems = [
     id: 'wqwasq',
     title: 'Riga',
     price: 3500000,
-    image: [
+    rentPrice: 35000,
+    images: [
       'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Monumento_a_la_Libertad%2C_Riga%2C_Letonia%2C_2012-08-07%2C_DD_10.JPG/600px-Monumento_a_la_Libertad%2C_Riga%2C_Letonia%2C_2012-08-07%2C_DD_10.JPG',
       'https://upload.wikimedia.org/wikipedia/commons/0/03/House_of_Blackheads_at_Dusk_3%2C_Riga%2C_Latvia_-_Diliff.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Opera_Nacional%2C_Riga%2C_Letonia%2C_2012-08-07%2C_DD_04.JPG/2880px-Opera_Nacional%2C_Riga%2C_Letonia%2C_2012-08-07%2C_DD_04.JPG',
@@ -33,7 +35,8 @@ const initialItems = [
     id: 'sdfghj',
     title: 'Cape Town',
     price: 3200000,
-    image: [
+    rentPrice: 32000,
+    images: [
       'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Port_of_Cape_Town.jpg/2880px-Port_of_Cape_Town.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Strand_Western_Cape_and_Golf_Club.jpg/2880px-Strand_Western_Cape_and_Golf_Club.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Clifton_Beachs.jpg/2880px-Clifton_Beachs.jpg',
@@ -49,7 +52,8 @@ const initialItems = [
     id: 'cvbn',
     title: 'Belgrade',
     price: 3000000,
-    image: [
+    rentPrice: 300000,
+    images: [
       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Avala_Tower.jpg/480px-Avala_Tower.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Дом_Народне_Скупштине_Србије.jpg/2880px-Дом_Народне_Скупштине_Србије.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Novi_Dvor_%281%29.JPG/2560px-Novi_Dvor_%281%29.JPG',
@@ -65,7 +69,8 @@ const initialItems = [
     id: 'poikm',
     title: 'Paris',
     price: 3000000,
-    image: [
+    rentPrice: 30000,
+    images: [
       'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg/1024px-Tour_Eiffel_Wikimedia_Commons_%28cropped%29.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Bercy%2C_Paris_01.jpg/2560px-Bercy%2C_Paris_01.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Notre_Dame_de_Paris_2013-07-24.jpg/1280px-Notre_Dame_de_Paris_2013-07-24.jpg',
@@ -81,7 +86,8 @@ const initialItems = [
     id: 'jerus',
     title: 'Jerusalem',
     price: 2800000,
-    image: [
+    rentPrice: 280000,
+    images: [
       'https://upload.wikimedia.org/wikipedia/commons/8/82/Mar-elias22.jpg',
       'https://upload.wikimedia.org/wikipedia/commons/d/d3/PS-Amman_6501.JPG',
       'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Old_city_walls_and_mamilla_ave._at_night_-_as_seen_from_%22Rooftop%22_restauran_-_Jerusalem%2C_Israel.jpg/1024px-Old_city_walls_and_mamilla_ave._at_night_-_as_seen_from_%22Rooftop%22_restauran_-_Jerusalem%2C_Israel.jpg',

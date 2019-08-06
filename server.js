@@ -21,14 +21,15 @@ let reviews = initialReviews;
 reloadMagic(app);
 
 class City {
-  constructor(price, sellerId, image, title, bio) {
+  constructor(price, sellerId, images, title, bio, rentPrice) {
     this.price = price;
     this.sellerId = sellerId;
-    this.image = image;
+    this.images = images;
     this.title = title;
     this.id = title;
     this.reviews = [];
     this.bio = bio;
+    this.rentPrice = this.rentPrice;
   }
 }
 
@@ -56,18 +57,18 @@ app.get('/home', (req, res) => {
 
 app.get('/itemDetails', (req, res) => {
   const item = items.find(item => item.id === req.query.itemId);
+  if (!item) {
+    res.send(
+      JSON.stringify({
+        success: false,
+        msg: 'Cannot find what you are looking for',
+      })
+    );
+  }
   const itemReviews = item.reviews.map(reviewId =>
     reviews.find(review => review.id === reviewId)
   );
-  if (item) {
-    return res.send(JSON.stringify({ success: true, item, itemReviews }));
-  }
-  res.send(
-    JSON.stringify({
-      success: false,
-      msg: 'Cannot find what you are looking for',
-    })
-  );
+  return res.send(JSON.stringify({ success: true, item, itemReviews }));
 });
 
 app.post('/logout', (req, res) => {
@@ -76,7 +77,7 @@ app.post('/logout', (req, res) => {
   res.send(JSON.stringify({ success: true }));
 });
 
-app.post('/newCity', upload.single('image'), (req, res) => {
+app.post('/newCity', upload.array('images'), (req, res) => {
   console.log('*** inside new city');
   console.log('body', req.body);
   const sessionId = req.cookies.sid;
@@ -86,8 +87,9 @@ app.post('/newCity', upload.single('image'), (req, res) => {
   const sellerId = req.body.username;
   const city = req.body.title;
   const bio = req.body.bio;
-  const imgPath = req.file.forEach(`/images/${req.file.filename}`);
-  const newCity = new City(price, sellerId, imgPath, city, bio);
+  const imgPaths = req.files.map(file => `/images/${file.filename}`);
+  const rentPrice = req.body.rentPrice;
+  const newCity = new City(price, sellerId, imgPaths, city, bio, rentPrice);
   console.log('new city', newCity);
   items = items.concat(newCity);
   console.log('updated items', items);

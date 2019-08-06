@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   display: grid;
   grid-template-rows: auto 1fr;
   min-height: 100vh;
-  background: #d2d2d2;
+  background: aliceblue;
 `;
 
 const LoginWrapper = styled.div`
@@ -89,7 +89,8 @@ class UnconnectedApp extends Component {
 
   renderItemDetails = routerData => {
     const itemId = routerData.match.params.itemId;
-    return <ItemDetails itemId={itemId} />;
+    console.log(routerData);
+    return <ItemDetails history={routerData.history} itemId={itemId} />;
   };
 
   renderSellForm = () => {

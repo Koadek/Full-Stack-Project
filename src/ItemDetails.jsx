@@ -13,7 +13,6 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   margin-top: 57px;
-  background-color: #fff;
   height: 100vh;
 `;
 
@@ -92,6 +91,7 @@ const CityInfo = styled.div`
   display: inline-block;
   color: rgb(72, 72, 72);
   text-decoration: none;
+  background-color: aliceblue;
 `;
 
 const City = styled.div`
@@ -136,7 +136,11 @@ const Reviews = styled.div`
 const Payment = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 286px;
 `;
+
+const RentInfo = styled.div``;
 
 class ItemDetails extends Component {
   onToken = token => {
@@ -156,6 +160,9 @@ class ItemDetails extends Component {
     let responseBody = await response.text();
     console.log('responseBody from item details', responseBody);
     let body = JSON.parse(responseBody);
+    if (!body.success) {
+      this.props.history.replace('/');
+    }
     console.log('parsed body', body);
     this.setState({ item: body.item, reviews: body.itemReviews });
   };
@@ -176,20 +183,34 @@ class ItemDetails extends Component {
       reviews.find(review => review.id === reviewId)
     );
 
-    return item ? (
+    return (
       <Wrapper>
         <CityImgs>
-          <MainImg src={item.image[0]} />
+          <MainImg src={item.images[0]} />
           <SideImg>
-            <SmallImg src={item.image[1]} />
-            <SmallImg src={item.image[2]} />
-            <SmallImg src={item.image[3]} />
-            <SmallImg src={item.image[4]} />
+            {item.images.slice(1, 5).map(img => (
+              <SmallImg src={img} />
+            ))}
           </SideImg>
         </CityImgs>
         <CityInfo>
+          <City>{item.title}</City>
           <CityValueWrapper>
-            <City>{item.title}</City>
+            <Info>
+              <CityBio>{item.bio}</CityBio>
+              {reviews.length > 0 && (
+                <Reviews>
+                  {reviews.length > 0 && <div>Reviews:</div>}
+                  <ul>
+                    {filteredReviews.map(review => (
+                      <li>
+                        {review.content} -{review.reviewer}
+                      </li>
+                    ))}
+                  </ul>
+                </Reviews>
+              )}
+            </Info>
             <Payment>
               <Cost>{this.formatNumber(item.price)}$</Cost>
               <StripeCheckout
@@ -198,7 +219,7 @@ class ItemDetails extends Component {
                 label="Buy now"
               />
               <div>or</div>
-              <div>{this.formatNumber(item.price / 30)}$ per day</div>
+              <div>{this.formatNumber(item.rentPrice)}$ per day</div>
               <DateRangePicker
                 startDate={this.state.startDate} // momentPropTypes.momentObj or null,
                 startDateId="your_unique_start_date_id" // PropTypes.string.isRequired,
@@ -210,6 +231,20 @@ class ItemDetails extends Component {
                 focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                 onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
               />
+              <RentInfo>
+                <div>
+                  {this.formatNumber(item.rentPrice)}$ x{' '}
+                  {(this.state.endDate - this.state.startDate) / 86400000} day
+                </div>
+                <Cost>
+                  {this.formatNumber(
+                    (item.rentPrice *
+                      (this.state.endDate - this.state.startDate)) /
+                      86400000
+                  )}
+                  $
+                </Cost>
+              </RentInfo>
               <StripeCheckout
                 token={this.onToken}
                 stripeKey="pk_test_VR905wY5YcZfeGB53NVZkrXg00KftYQTND"
@@ -217,25 +252,8 @@ class ItemDetails extends Component {
               />
             </Payment>
           </CityValueWrapper>
-          <Info>
-            <CityBio>{item.bio}</CityBio>
-            {reviews.length > 0 && (
-              <Reviews>
-                {reviews.length > 0 && <div>Reviews:</div>}
-                <ul>
-                  {filteredReviews.map(review => (
-                    <li>
-                      {review.content} -{review.reviewer}
-                    </li>
-                  ))}
-                </ul>
-              </Reviews>
-            )}
-          </Info>
         </CityInfo>
       </Wrapper>
-    ) : (
-      <div>No item found</div>
     );
   }
 }

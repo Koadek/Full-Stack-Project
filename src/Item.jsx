@@ -120,7 +120,7 @@ class Item extends Component {
     console.log(this.props, 'inside item');
     return (
       <CardCenter>
-        <CityImg src={this.props.imageLocation[0]} />
+        <CityImg src={this.props.imagePaths[0]} />
         <CityInfo>
           <City>
             <Links to={'/details/' + this.props.id}>{this.props.title}</Links>
