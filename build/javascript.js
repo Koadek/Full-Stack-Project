@@ -86915,32 +86915,35 @@ const SideImg = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div`
   width: 50%;
   overflow: hidden;
 `;
-const SmallImg = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].img`
-  display: inline-block;
-  vertical-align: middle;
-  position: relative;
-  z-index: 0;
-  background: rgb(216, 216, 216);
-  contain: strict;
-  position: relative;
-  z-index: 0;
-  border-radius: 3px;
+const SmallImg = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].div`
   overflow: hidden;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  white-space: nowrap;
-  vertical-align: middle;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1);
-  transition: transform 0.4s ease-in-out;
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.2);
+  & > img {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    z-index: 0;
+    background: rgb(216, 216, 216);
+    contain: strict;
+    position: relative;
+    z-index: 0;
+    border-radius: 3px;
+
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    white-space: nowrap;
+    vertical-align: middle;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1);
+    transition: transform 0.4s ease-in-out;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.2);
+    }
   }
 `;
 const MainImg = styled_components__WEBPACK_IMPORTED_MODULE_7__["default"].img`
@@ -87045,7 +87048,8 @@ class ItemDetails extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       console.log('parsed body', body);
       this.setState({
         item: body.item,
-        reviews: body.itemReviews
+        reviews: body.itemReviews,
+        seller: body.seller
       });
     });
 
@@ -87080,8 +87084,8 @@ class ItemDetails extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
       return 'loading';
     }
 
-    console.log(item);
     const reviews = this.state.reviews;
+    const seller = this.state.seller;
     const filteredReviews = item.reviews.map(reviewId => reviews.find(review => review.id === reviewId));
     const {
       modalIsOpen
@@ -87096,10 +87100,10 @@ class ItemDetails extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
     })) : null), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityImgs, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MainImg, {
       onClick: () => this.toggleModal(0),
       src: item.images[0]
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SideImg, null, item.images.slice(1, 5).map((img, idx) => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SmallImg, {
+    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SideImg, null, item.images.slice(1, 5).map((img, idx) => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SmallImg, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("img", {
       onClick: () => this.toggleModal(idx + 1),
       src: img
-    })))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityInfo, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(City, null, item.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityValueWrapper, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Info, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityBio, null, item.bio), reviews.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Reviews, null, reviews.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Reviews:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, filteredReviews.map(review => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, review.content, " -", review.reviewer))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Payment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cost, null, this.formatNumber(item.price), "$"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_stripe_checkout__WEBPACK_IMPORTED_MODULE_5___default.a, {
+    }))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityInfo, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(City, null, item.title), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, seller.name), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityValueWrapper, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Info, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(CityBio, null, item.bio), reviews.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Reviews, null, reviews.length > 0 && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, "Reviews:"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("ul", null, filteredReviews.map(review => react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("li", null, review.content, " -", review.reviewer))))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Payment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cost, null, this.formatNumber(item.price), "$"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_stripe_checkout__WEBPACK_IMPORTED_MODULE_5___default.a, {
       token: this.onToken,
       stripeKey: "pk_test_VR905wY5YcZfeGB53NVZkrXg00KftYQTND",
       label: "Buy now"
@@ -87126,7 +87130,7 @@ class ItemDetails extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         focusedInput
       }) // PropTypes.func.isRequired,
 
-    }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(RentInfo, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.formatNumber(item.rentPrice), "$ x", ' ', (this.state.endDate - this.state.startDate) / 86400000, " day"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cost, null, this.formatNumber(item.rentPrice * (this.state.endDate - this.state.startDate) / 86400000), "$")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_stripe_checkout__WEBPACK_IMPORTED_MODULE_5___default.a, {
+    }), this.state.endDate && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(RentInfo, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.formatNumber(item.rentPrice), "$ x", ' ', (this.state.endDate - this.state.startDate) / 86400000, " day"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cost, null, this.formatNumber(item.rentPrice * (this.state.endDate - this.state.startDate) / 86400000), "$")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_stripe_checkout__WEBPACK_IMPORTED_MODULE_5___default.a, {
       token: this.onToken,
       stripeKey: "pk_test_VR905wY5YcZfeGB53NVZkrXg00KftYQTND",
       label: "Rent now"
@@ -87137,7 +87141,8 @@ class ItemDetails extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 const mapStateToProps = state => {
   return {
-    reviews: state.reviews
+    reviews: state.reviews,
+    sellers: state.sellers
   };
 };
 

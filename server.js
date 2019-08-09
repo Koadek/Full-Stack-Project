@@ -68,7 +68,8 @@ app.get('/itemDetails', (req, res) => {
   const itemReviews = item.reviews.map(reviewId =>
     reviews.find(review => review.id === reviewId)
   );
-  return res.send(JSON.stringify({ success: true, item, itemReviews }));
+  const seller = sellers.find(seller => seller.id === item.sellerId);
+  return res.send(JSON.stringify({ success: true, item, itemReviews, seller }));
 });
 
 app.post('/logout', (req, res) => {

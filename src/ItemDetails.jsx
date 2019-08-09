@@ -29,32 +29,35 @@ const SideImg = styled.div`
   overflow: hidden;
 `;
 
-const SmallImg = styled.img`
-  display: inline-block;
-  vertical-align: middle;
-  position: relative;
-  z-index: 0;
-  background: rgb(216, 216, 216);
-  contain: strict;
-  position: relative;
-  z-index: 0;
-  border-radius: 3px;
+const SmallImg = styled.div`
   overflow: hidden;
-  top: 0px;
-  bottom: 0px;
-  left: 0px;
-  right: 0px;
-  white-space: nowrap;
-  vertical-align: middle;
-  height: 100%;
-  width: 100%;
-  object-fit: cover;
-  object-position: center;
-  transform: scale(1);
-  transition: transform 0.4s ease-in-out;
-  cursor: pointer;
-  &:hover {
-    transform: scale(1.2);
+  & > img {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    z-index: 0;
+    background: rgb(216, 216, 216);
+    contain: strict;
+    position: relative;
+    z-index: 0;
+    border-radius: 3px;
+
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    white-space: nowrap;
+    vertical-align: middle;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    transform: scale(1);
+    transition: transform 0.4s ease-in-out;
+    cursor: pointer;
+    &:hover {
+      transform: scale(1.2);
+    }
   }
 `;
 
@@ -159,7 +162,11 @@ class ItemDetails extends Component {
       this.props.history.replace('/');
     }
     console.log('parsed body', body);
-    this.setState({ item: body.item, reviews: body.itemReviews });
+    this.setState({
+      item: body.item,
+      reviews: body.itemReviews,
+      seller: body.seller,
+    });
   };
 
   onToken = token => {
@@ -191,8 +198,8 @@ class ItemDetails extends Component {
       return 'loading';
     }
 
-    console.log(item);
     const reviews = this.state.reviews;
+    const seller = this.state.seller;
 
     const filteredReviews = item.reviews.map(reviewId =>
       reviews.find(review => review.id === reviewId)
@@ -216,12 +223,15 @@ class ItemDetails extends Component {
           <MainImg onClick={() => this.toggleModal(0)} src={item.images[0]} />
           <SideImg>
             {item.images.slice(1, 5).map((img, idx) => (
-              <SmallImg onClick={() => this.toggleModal(idx + 1)} src={img} />
+              <SmallImg>
+                <img onClick={() => this.toggleModal(idx + 1)} src={img} />
+              </SmallImg>
             ))}
           </SideImg>
         </CityImgs>
         <CityInfo>
           <City>{item.title}</City>
+          <div>{seller.name}</div>
           <CityValueWrapper>
             <Info>
               <CityBio>{item.bio}</CityBio>
@@ -258,20 +268,22 @@ class ItemDetails extends Component {
                 focusedInput={this.state.focusedInput} // PropTypes.oneOf([START_DATE, END_DATE]) or null,
                 onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
               />
-              <RentInfo>
-                <div>
-                  {this.formatNumber(item.rentPrice)}$ x{' '}
-                  {(this.state.endDate - this.state.startDate) / 86400000} day
-                </div>
-                <Cost>
-                  {this.formatNumber(
-                    (item.rentPrice *
-                      (this.state.endDate - this.state.startDate)) /
-                      86400000
-                  )}
-                  $
-                </Cost>
-              </RentInfo>
+              {this.state.endDate && (
+                <RentInfo>
+                  <div>
+                    {this.formatNumber(item.rentPrice)}$ x{' '}
+                    {(this.state.endDate - this.state.startDate) / 86400000} day
+                  </div>
+                  <Cost>
+                    {this.formatNumber(
+                      (item.rentPrice *
+                        (this.state.endDate - this.state.startDate)) /
+                        86400000
+                    )}
+                    $
+                  </Cost>
+                </RentInfo>
+              )}
               <StripeCheckout
                 token={this.onToken}
                 stripeKey="pk_test_VR905wY5YcZfeGB53NVZkrXg00KftYQTND"
@@ -286,7 +298,7 @@ class ItemDetails extends Component {
 }
 
 const mapStateToProps = state => {
-  return { reviews: state.reviews };
+  return { reviews: state.reviews, sellers: state.sellers };
 };
 
 export default connect(mapStateToProps)(ItemDetails);
