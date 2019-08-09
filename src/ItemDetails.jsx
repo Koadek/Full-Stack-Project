@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
+import Carousel, { Modal, ModalGateway } from 'react-images';
 import 'react-dates/initialize';
-import {
-  DateRangePicker,
-  SingleDatePicker,
-  DayPickerRangeController,
-} from 'react-dates';
+import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 import StripeCheckout from 'react-stripe-checkout';
@@ -20,6 +17,7 @@ const CityImgs = styled.div`
   width: 100%;
   height: 300px;
   display: flex;
+  overflow: hidden;
 `;
 
 const SideImg = styled.div`
@@ -28,6 +26,7 @@ const SideImg = styled.div`
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: 1fr 1fr;
   width: 50%;
+  overflow: hidden;
 `;
 
 const SmallImg = styled.img`
@@ -39,10 +38,7 @@ const SmallImg = styled.img`
   contain: strict;
   position: relative;
   z-index: 0;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-radius: 3px;
   overflow: hidden;
   top: 0px;
   bottom: 0px;
@@ -54,6 +50,12 @@ const SmallImg = styled.img`
   width: 100%;
   object-fit: cover;
   object-position: center;
+  transform: scale(1);
+  transition: transform 0.4s ease-in-out;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 const MainImg = styled.img`
@@ -67,10 +69,7 @@ const MainImg = styled.img`
   contain: strict;
   position: relative;
   z-index: 0;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  border-radius: 3px;
   overflow: hidden;
   top: 0px;
   bottom: 0px;
@@ -80,6 +79,12 @@ const MainImg = styled.img`
   vertical-align: middle;
   object-fit: cover;
   object-position: center;
+  cursor: pointer;
+  transform: scale(1);
+  transition: transform 0.4s ease-in-out;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 const CityInfo = styled.div`
@@ -143,18 +148,8 @@ const Payment = styled.div`
 const RentInfo = styled.div``;
 
 class ItemDetails extends Component {
-  onToken = token => {
-    fetch('/save-stripe-token', {
-      method: 'POST',
-      body: JSON.stringify(token),
-    }).then(response => {
-      response.json().then(data => {
-        alert(`We are in business, ${data.email}`);
-      });
-    });
-  };
+  state = { modalIsOpen: false, carouselIdx: 0 };
 
-  state = {};
   componentDidMount = async () => {
     let response = await fetch(`/itemDetails?itemId=${this.props.itemId}`);
     let responseBody = await response.text();
@@ -167,29 +162,61 @@ class ItemDetails extends Component {
     this.setState({ item: body.item, reviews: body.itemReviews });
   };
 
+  onToken = token => {
+    fetch('/save-stripe-token', {
+      method: 'POST',
+      body: JSON.stringify(token),
+    }).then(response => {
+      response.json().then(data => {
+        alert(`We are in business, ${data.email}`);
+      });
+    });
+  };
+
   formatNumber(num) {
     num = Math.ceil(num);
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
   }
+
+  toggleModal = idx => {
+    this.setState(state => ({
+      modalIsOpen: !state.modalIsOpen,
+      carouselIdx: idx,
+    }));
+  };
 
   render() {
     const item = this.state.item;
     if (!item) {
       return 'loading';
     }
+
+    console.log(item);
     const reviews = this.state.reviews;
 
     const filteredReviews = item.reviews.map(reviewId =>
       reviews.find(review => review.id === reviewId)
     );
 
+    const { modalIsOpen } = this.state;
+
     return (
       <Wrapper>
+        <ModalGateway>
+          {modalIsOpen ? (
+            <Modal onClose={this.toggleModal}>
+              <Carousel
+                currentIndex={this.state.carouselIdx}
+                views={item.images.map(img => ({ src: img }))}
+              />
+            </Modal>
+          ) : null}
+        </ModalGateway>
         <CityImgs>
-          <MainImg src={item.images[0]} />
+          <MainImg onClick={() => this.toggleModal(0)} src={item.images[0]} />
           <SideImg>
-            {item.images.slice(1, 5).map(img => (
-              <SmallImg src={img} />
+            {item.images.slice(1, 5).map((img, idx) => (
+              <SmallImg onClick={() => this.toggleModal(idx + 1)} src={img} />
             ))}
           </SideImg>
         </CityImgs>

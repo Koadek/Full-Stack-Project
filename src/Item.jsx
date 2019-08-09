@@ -32,17 +32,12 @@ const CityImg = styled.img`
   vertical-align: middle;
   position: relative;
   z-index: 0;
-  width: 300px;
+  width: 100%;
   height: 200px;
-  margin: 5px;
   background: rgb(216, 216, 216);
   contain: strict;
   position: relative;
   z-index: 0;
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
   overflow: hidden;
   top: 0px;
   bottom: 0px;
@@ -50,6 +45,11 @@ const CityImg = styled.img`
   right: 0px;
   white-space: nowrap;
   vertical-align: middle;
+  transform: scale(1);
+  transition: transform 0.4s ease-in-out;
+  &:hover {
+    transform: scale(1.2);
+  }
 `;
 
 const CityInfo = styled.div`
@@ -87,6 +87,10 @@ const Bio = styled.div`
 
 const Links = styled(Link)`
   text-decoration: none;
+  overflow: hidden;
+  margin: 5px;
+  border-radius: 3px;
+  width: 300px;
 `;
 
 const PayBtn = styled(StripeCheckout)`
@@ -120,7 +124,11 @@ class Item extends Component {
     console.log(this.props, 'inside item');
     return (
       <CardCenter>
-        <CityImg src={this.props.imagePaths[0]} />
+        <Links to={'/details/' + this.props.id}>
+          {' '}
+          <CityImg src={this.props.imagePaths[0]} />
+        </Links>
+
         <CityInfo>
           <City>
             <Links to={'/details/' + this.props.id}>{this.props.title}</Links>

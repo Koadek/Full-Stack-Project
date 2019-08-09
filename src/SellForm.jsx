@@ -102,7 +102,7 @@ const Title = styled.h1`
 class SellForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { price: 0, images: [], title: '', bio: '' };
+    this.state = { price: 0, images: [], title: '', bio: '', rentPrice: 0 };
   }
 
   handleTitleChange = evt => {
@@ -117,8 +117,12 @@ class SellForm extends Component {
     this.setState({ price: evt.target.value });
   };
 
+  handleRentPriceChange = evt => {
+    this.setState({ rentPrice: evt.target.value });
+  };
+
   handleImagesChange = evt => {
-    this.setState({ images: evt.target.files });
+    this.setState({ images: [...evt.target.files] });
   };
 
   handleSubmit = evt => {
@@ -127,6 +131,7 @@ class SellForm extends Component {
     let data = new FormData();
     data.append('title', this.state.title);
     data.append('price', this.state.price);
+    data.append('rentPrice', this.state.rentPrice);
     this.state.images.forEach(img => data.append('images', img));
     data.append('username', this.props.username);
     data.append('bio', this.props.bio);
@@ -169,7 +174,14 @@ class SellForm extends Component {
                 <Input
                   onChange={this.handlePriceChange}
                   value={this.props.price}
-                  placeholder="Price"
+                  placeholder="Selling Price"
+                />
+              </FormField>
+              <FormField>
+                <Input
+                  onChange={this.handleRentPriceChange}
+                  value={this.props.rentPrice}
+                  placeholder="Rental price per day"
                 />
               </FormField>
             </div>

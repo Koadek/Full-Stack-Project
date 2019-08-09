@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { mediaSizes } from './globals';
 import { Link } from 'react-router-dom';
@@ -96,6 +97,7 @@ const SearchBar = styled.input`
   border-radius: var(--border-radius);
   border: none;
   display: none;
+  width: 98%;
   @media (min-width: ${mediaSizes.sm}) {
     display: block;
   }
@@ -106,18 +108,25 @@ function topFunction() {
   document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 }
 
-function Navbar({ query, handleQueryChange, setLogout }) {
+function handleSubmit(evt, history) {
+  evt.preventDefault();
+  history.push('/');
+}
+
+function Navbar({ query, handleQueryChange, handleHome, setLogout, history }) {
   return (
     <Wrapper>
-      <Logo to="/">
+      <Logo to="/" onClick={handleHome}>
         <h1>Monopalibay</h1>
       </Logo>
-      <SearchBar
-        type="text"
-        onChange={handleQueryChange}
-        value={query}
-        placeholder="Which city should you own next?"
-      />
+      <form onSubmit={evt => handleSubmit(evt, history)}>
+        <SearchBar
+          type="text"
+          onChange={handleQueryChange}
+          value={query}
+          placeholder="Which city should you own next?"
+        />
+      </form>
       <NavLinks>
         <NavButton onClick={topFunction}>Top</NavButton>
         <NavLink to="/sellForm">Sell your city</NavLink>
@@ -142,10 +151,13 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   handleQueryChange: evt =>
     dispatch({ type: 'SET_QUERY', query: evt.target.value }),
+  handleHome: () => dispatch({ type: 'SET_QUERY', query: '' }),
   setLogout: () => handleLogout(dispatch),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Navbar);
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Navbar)
+);
