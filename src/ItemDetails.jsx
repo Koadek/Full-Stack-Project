@@ -257,26 +257,28 @@ class ItemDetails extends Component {
                 onFocusChange={focusedInput => this.setState({ focusedInput })} // PropTypes.func.isRequired,
               />
               {this.state.endDate && (
-                <RentInfo>
-                  <div>
-                    {this.formatNumber(item.rentPrice)}$ x{' '}
-                    {(this.state.endDate - this.state.startDate) / 86400000} day
-                  </div>
-                  <Cost>
-                    {this.formatNumber(
-                      (item.rentPrice *
-                        (this.state.endDate - this.state.startDate)) /
-                        86400000
-                    )}
-                    $
-                  </Cost>
-                </RentInfo>
-              )}
-              <StripeCheckout
-                token={this.onToken}
-                stripeKey="pk_test_VR905wY5YcZfeGB53NVZkrXg00KftYQTND"
-                label="Rent now"
-              />
+                  <RentInfo>
+                    <div>
+                      {this.formatNumber(item.rentPrice)}$ x{' '}
+                      {(this.state.endDate - this.state.startDate) / 86400000}{' '}
+                      day
+                    </div>
+                    <Cost>
+                      {this.formatNumber(
+                        (item.rentPrice *
+                          (this.state.endDate - this.state.startDate)) /
+                          86400000
+                      )}
+                      $
+                    </Cost>
+                  </RentInfo>
+                ) && (
+                  <StripeCheckout
+                    token={this.onToken}
+                    stripeKey="pk_test_VR905wY5YcZfeGB53NVZkrXg00KftYQTND"
+                    label="Rent now"
+                  />
+                )}
             </Payment>
           </CityValueWrapper>
         </CityInfo>

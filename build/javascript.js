@@ -87140,7 +87140,7 @@ class ItemDetails extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
         focusedInput
       }) // PropTypes.func.isRequired,
 
-    }), this.state.endDate && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(RentInfo, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.formatNumber(item.rentPrice), "$ x", ' ', (this.state.endDate - this.state.startDate) / 86400000, " day"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cost, null, this.formatNumber(item.rentPrice * (this.state.endDate - this.state.startDate) / 86400000), "$")), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_stripe_checkout__WEBPACK_IMPORTED_MODULE_6___default.a, {
+    }), this.state.endDate && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(RentInfo, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("div", null, this.formatNumber(item.rentPrice), "$ x", ' ', (this.state.endDate - this.state.startDate) / 86400000, ' ', "day"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Cost, null, this.formatNumber(item.rentPrice * (this.state.endDate - this.state.startDate) / 86400000), "$")) && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react_stripe_checkout__WEBPACK_IMPORTED_MODULE_6___default.a, {
       token: this.onToken,
       stripeKey: "pk_test_VR905wY5YcZfeGB53NVZkrXg00KftYQTND",
       label: "Rent now"
