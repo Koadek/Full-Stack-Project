@@ -2,15 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Item from './Item.jsx';
 import styled from 'styled-components';
+import { mediaSizes } from './globals';
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-auto-rows: 210px;
   align-items: center;
   flex-direction: column;
   margin-top: 60px;
   grid-gap: 2px;
+  @media (min-width: ${mediaSizes.lg}) {
+    grid-template-columns: 1fr 1fr;
+  }
 `;
 
 class Home extends Component {

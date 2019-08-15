@@ -170,7 +170,7 @@ const initialItems = [
   {
     id: 'death',
     title: 'Sydney',
-    price: 22000000,
+    price: 2200000,
     rentPrice: 22000,
     images: [
       'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Sydney_skyline_from_the_north_August_2016_%2829009142591%29.jpg/2880px-Sydney_skyline_from_the_north_August_2016_%2829009142591%29.jpg',
@@ -433,6 +433,11 @@ const initialSellers = [
     id: 'greece',
     name: 'Kyriakos Mitsotakis',
     rating: '3.5 stars',
+  },
+  {
+    id: 'spain',
+    name: 'Pedro Sánchez',
+    rating: '4 stars',
   },
   {
     id: 'japan',

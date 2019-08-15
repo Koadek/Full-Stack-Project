@@ -29,7 +29,7 @@ class City {
     this.id = title;
     this.reviews = [];
     this.bio = bio;
-    this.rentPrice = this.rentPrice;
+    this.rentPrice = rentPrice;
   }
 }
 
@@ -69,7 +69,9 @@ app.get('/itemDetails', (req, res) => {
     reviews.find(review => review.id === reviewId)
   );
   const seller = sellers.find(seller => seller.id === item.sellerId);
-  return res.send(JSON.stringify({ success: true, item, itemReviews, seller }));
+  return res.send(
+    JSON.stringify({ success: true, item, itemReviews, seller, items })
+  );
 });
 
 app.post('/logout', (req, res) => {

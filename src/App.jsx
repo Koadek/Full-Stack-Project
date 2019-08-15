@@ -51,6 +51,7 @@ const Title = styled.h1`
   color: #cacaca;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
   font-size: 4rem;
+  text-align: center;
 `;
 
 class UnconnectedApp extends Component {

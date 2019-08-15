@@ -134,7 +134,7 @@ class SellForm extends Component {
     data.append('rentPrice', this.state.rentPrice);
     this.state.images.forEach(img => data.append('images', img));
     data.append('username', this.props.username);
-    data.append('bio', this.props.bio);
+    data.append('bio', this.state.bio);
     fetch('/newCity', {
       method: 'POST',
       body: data,

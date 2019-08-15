@@ -116,7 +116,7 @@ class Item extends Component {
   }
 
   formatText(str) {
-    if (str.length > 300) str = str.substring(0, 300) + '...';
+    if (str.length > 250) str = str.substring(0, 250) + '...';
     return str;
   }
 

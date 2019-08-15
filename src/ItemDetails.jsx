@@ -3,6 +3,7 @@ import Carousel, { Modal, ModalGateway } from 'react-images';
 import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
+import Item from './Item.jsx';
 
 import StripeCheckout from 'react-stripe-checkout';
 import { connect } from 'react-redux';
@@ -10,18 +11,18 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div`
   margin-top: 57px;
-  height: 100vh;
+  height: 90vh;
 `;
 
 const CityImgs = styled.div`
   width: 100%;
-  height: 300px;
+  height: 270px;
   display: flex;
   overflow: hidden;
 `;
 
 const SideImg = styled.div`
-  height: 300px;
+  height: 270px;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: 1fr 1fr;
@@ -67,7 +68,7 @@ const MainImg = styled.img`
   position: relative;
   z-index: 0;
   width: 50%;
-  height: 300px;
+  height: 270px;
   background: rgb(216, 216, 216);
   contain: strict;
   position: relative;
@@ -115,30 +116,11 @@ const Cost = styled.div`
 const CityValueWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 5px 0 10px;
 `;
 
 const CityBio = styled.div`
-  width: 50%;
+  width: 60%;
   margin: 30px;
-  padding: 15px;
-  background-color: #e6e6e6;
-  border: 1px solid black;
-  border-radius: 2.5px;
-`;
-
-const Info = styled.div`
-  display: flex;
-`;
-
-const Reviews = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 30px;
-  border: solid 1px black;
-  padding: 30px;
-  border-radius: 2.5px;
-  background-color: #e7fbe7;
 `;
 
 const Payment = styled.div`
@@ -148,13 +130,32 @@ const Payment = styled.div`
   max-width: 286px;
 `;
 
+const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 const RentInfo = styled.div``;
+
+const OtherCities = styled.div`
+  display: flex;
+`;
 
 class ItemDetails extends Component {
   state = { modalIsOpen: false, carouselIdx: 0 };
 
-  componentDidMount = async () => {
-    let response = await fetch(`/itemDetails?itemId=${this.props.itemId}`);
+  componentDidMount = () => {
+    this.updateDataFromServer(this.props.itemId);
+  };
+
+  componentWillReceiveProps = nextProps => {
+    if (this.props.itemId !== nextProps.itemId) {
+      this.updateDataFromServer(nextProps.itemId);
+    }
+  };
+
+  updateDataFromServer = async itemId => {
+    let response = await fetch(`/itemDetails?itemId=${itemId}`);
     let responseBody = await response.text();
     console.log('responseBody from item details', responseBody);
     let body = JSON.parse(responseBody);
@@ -166,6 +167,7 @@ class ItemDetails extends Component {
       item: body.item,
       reviews: body.itemReviews,
       seller: body.seller,
+      items: body.items,
     });
   };
 
@@ -197,13 +199,11 @@ class ItemDetails extends Component {
     if (!item) {
       return 'loading';
     }
-
-    const reviews = this.state.reviews;
     const seller = this.state.seller;
+    const items = this.state.items;
 
-    const filteredReviews = item.reviews.map(reviewId =>
-      reviews.find(review => review.id === reviewId)
-    );
+    const firstCity = items[Math.floor(Math.random() * items.length)];
+    const secondCity = items[Math.floor(Math.random() * items.length)];
 
     const { modalIsOpen } = this.state;
 
@@ -230,24 +230,12 @@ class ItemDetails extends Component {
           </SideImg>
         </CityImgs>
         <CityInfo>
-          <City>{item.title}</City>
-          <div>{seller.name}</div>
+          <TitleWrapper>
+            <City>{item.title}</City>
+            <div>Seller: {seller.name}</div>
+          </TitleWrapper>
           <CityValueWrapper>
-            <Info>
-              <CityBio>{item.bio}</CityBio>
-              {reviews.length > 0 && (
-                <Reviews>
-                  {reviews.length > 0 && <div>Reviews:</div>}
-                  <ul>
-                    {filteredReviews.map(review => (
-                      <li>
-                        {review.content} -{review.reviewer}
-                      </li>
-                    ))}
-                  </ul>
-                </Reviews>
-              )}
-            </Info>
+            <CityBio>{item.bio}</CityBio>
             <Payment>
               <Cost>{this.formatNumber(item.price)}$</Cost>
               <StripeCheckout
@@ -292,13 +280,32 @@ class ItemDetails extends Component {
             </Payment>
           </CityValueWrapper>
         </CityInfo>
+
+        <OtherCities>
+          <Item
+            cost={firstCity.price}
+            sellerId={firstCity.sellerId}
+            imagePaths={firstCity.images}
+            title={firstCity.title}
+            id={firstCity.id}
+            bio={firstCity.bio}
+          />
+          <Item
+            cost={secondCity.price}
+            sellerId={secondCity.sellerId}
+            imagePaths={secondCity.images}
+            title={secondCity.title}
+            id={secondCity.id}
+            bio={secondCity.bio}
+          />
+        </OtherCities>
       </Wrapper>
     );
   }
 }
 
 const mapStateToProps = state => {
-  return { reviews: state.reviews, sellers: state.sellers };
+  return { reviews: state.reviews, sellers: state.sellers, items: state.items };
 };
 
 export default connect(mapStateToProps)(ItemDetails);

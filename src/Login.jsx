@@ -89,7 +89,7 @@ class UnconnectedLogin extends Component {
         </FormField>
         <FormField>
           <Input
-            type="text"
+            type="password"
             onChange={this.handlePasswordChange}
             placeholder="Password"
           />
